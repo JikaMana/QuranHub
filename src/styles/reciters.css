@@ -1,0 +1,20 @@
+.slick-dots li.slick-active button:before {
+  color: green;
+}
+
+.slick-dots li button:before {
+  font-size: 12px;
+}
+.slick-prev,
+.slick-next {
+  top: 40%;
+}
+.slick-next {
+  right: -2rem;
+}
+.slick-prev {
+  left: -2rem;
+}
+.slick-slide > div {
+  margin: 0 10px;
+}

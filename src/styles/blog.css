@@ -1,0 +1,8 @@
+.blog-container {
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+}
+@media (max-width: 568px) {
+  .blog-container {
+    grid-template-columns: auto;
+  }
+}

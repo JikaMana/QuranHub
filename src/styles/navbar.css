@@ -1,0 +1,43 @@
+header {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(3px);
+  background: transparent;
+  z-index: 1000;
+}
+nav a li {
+  list-style-type: none;
+}
+nav a li.active {
+  background-color: #1a2e05;
+}
+@media (max-width: 1024px) {
+  .navbarSlider {
+    left: -300px;
+    z-index: 1000;
+    transform: all 2000ms ease-in;
+  }
+  .navbarSlider.active {
+    animation: slideDown 0.3s ease forwards;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(300px);
+  }
+}
+.hamburger.active {
+  display: none;
+}
+.cross {
+  display: none;
+}
+.cross.active {
+  display: block;
+}

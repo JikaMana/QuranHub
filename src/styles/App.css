@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin-block: 2rem;
+  background-color: antiquewhite;
+}
+.input-container:focus-within {
+  border-width: 2px;
+}
+
+.sorting-options {
+  background-color: antiquewhite;
+  padding: 1rem;
+}
+
+select:focus option {
+  background-color: antiquewhite;
+}
