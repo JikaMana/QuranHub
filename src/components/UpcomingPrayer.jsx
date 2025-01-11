@@ -11,6 +11,7 @@ const UpcomingPrayer = () => {
     "Isha",
   ];
   const [nextPrayer, setNextPrayer] = useState(null);
+  const [currentPrayer, setCurrentPrayer] = useState(null);
   const [timeLeft, setTimeLeft] = useState("");
 
   const getPrayerTimes = async (latitude, longitude) => {
@@ -48,9 +49,21 @@ const UpcomingPrayer = () => {
       .find(([prayer, time]) => time > currentTime);
 
     if (upcomingPrayer) {
+      const nextPrayerName = upcomingPrayer[0];
+      setNextPrayer(nextPrayerName);
+
+      // Find the current prayer using the index
+      const nextPrayerIndex = filteredPrayers.indexOf(nextPrayerName);
+      const currentPrayerIndex =
+        nextPrayerIndex === 0
+          ? filteredPrayers.length - 1
+          : nextPrayerIndex - 1;
+
+      setCurrentPrayer(filteredPrayers[currentPrayerIndex]);
+
       setNextPrayer(upcomingPrayer[0]);
-      const prayerTime = upcomingPrayer[1];
-      const [prayerHour, prayerMinute] = prayerTime.split(":");
+
+      const [prayerHour, prayerMinute] = upcomingPrayer[1].split(":");
 
       const nextPrayerDate = new Date();
       nextPrayerDate.setHours(prayerHour, prayerMinute, 0, 0);
@@ -86,7 +99,7 @@ const UpcomingPrayer = () => {
   return (
     <section className="xl:mx-20 mx-10 mb-10">
       {!prayerTimes ? (
-        <p className="text-3xl text-lime-950 font-bold">
+        <p className="text-3xl text-lime-950 font-bold mt-20">
           Loading prayer times...
         </p>
       ) : (
@@ -98,8 +111,12 @@ const UpcomingPrayer = () => {
                   <p className="text-md font-medium text-lime-950">Today</p>
                 </div>
                 <p className="text-xl text-lime-950">
-                  Next prayer is <span className="font-bold">{nextPrayer}</span>{" "}
-                  in <span className="font-bold">{timeLeft}</span>
+                  Next prayer is{" "}
+                  <span className="font-bold">
+                    {" "}
+                    {nextPrayer} {currentPrayer}
+                  </span>
+                  in <span className="font-bold"> {timeLeft}</span>
                 </p>
               </div>
               <div>

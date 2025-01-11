@@ -28,10 +28,11 @@ const router = createBrowserRouter(
           element={<SingleBlogDetail />}
           loader={blogLoader}
         />
-        <Route path="/salat" element={<Timings />} />
         <Route path="/reader" element={<MushafReader />} />
         <Route path="/audio" element={<AudioListener />} />
       </Route>
+      <Route path="/salat" element={<Timings />} />
+
       <Route path="*" element={<NotFoundPage />} />
     </>
   )
