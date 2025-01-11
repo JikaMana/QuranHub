@@ -112,10 +112,7 @@ const UpcomingPrayer = () => {
                 </div>
                 <p className="text-xl text-lime-950">
                   Next prayer is{" "}
-                  <span className="font-bold">
-                    {" "}
-                    {nextPrayer} {currentPrayer}
-                  </span>
+                  <span className="font-bold"> {nextPrayer}</span>
                   in <span className="font-bold"> {timeLeft}</span>
                 </p>
               </div>
@@ -145,10 +142,16 @@ const UpcomingPrayer = () => {
                 .map(([prayer, time]) => (
                   <div
                     key={prayer}
-                    className="flex justify-between border-2 p-5 rounded-xl w-full border-lime-950 text-lime-950"
+                    className={`flex justify-between items-center border-2 p-5 rounded-xl w-full border-lime-950 text-lime-950 ${currentPrayer === prayer ? "bg-lime-950 text-white" : ""}`}
                   >
-                    <p className="text-lg font-semibold">{prayer}</p>
-                    <h2 className="text-xl font-medium">{time}</h2>
+                    <div>
+                      <p className="text-lg font-semibold">{prayer}</p>
+                      <h2 className="text-xl font-medium">{time}</h2>
+                    </div>
+
+                    {currentPrayer === prayer && (
+                      <p className="text-lg font-semibold float-end">Now</p>
+                    )}
                   </div>
                 ))}
             </div>
