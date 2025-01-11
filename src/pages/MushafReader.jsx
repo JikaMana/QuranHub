@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 
 const MushafReader = () => {
   const [surah, setSurah] = useState(null);
+  const [surahTranslation, setSurahTranslation] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,36 +16,44 @@ const MushafReader = () => {
       setSurah(null);
       return;
     }
+    const API = "http://api.alquran.cloud/v1/surah/";
 
-    const fetchSurah = async () => {
+    const fetchSurahData = async () => {
       try {
-        const response = await fetch(
-          `http://api.alquran.cloud/v1/surah/${surahNumber}`
-        );
-        if (!response.ok) {
-          throw new Error(`Failed to fetch Surah.`);
+        const [surahResponse, translationResponse] = await Promise.all([
+          fetch(`http://api.alquran.cloud/v1/surah/${surahNumber}`),
+          fetch(`http://api.alquran.cloud/v1/surah/${surahNumber}/en.asad`),
+        ]);
+
+        if (!surahResponse.ok || !translationResponse.ok) {
+          throw new Error("Failed to fetch Surah or its translation.");
         }
-        const data = await response.json();
-        setSurah(data.data);
+
+        const surahData = await surahResponse.json();
+        const translationData = await translationResponse.json();
+
+        setSurah(surahData.data);
+        setSurahTranslation(translationData.data);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchSurah();
-  }, [surah, surahNumber]);
-  // if (surahNumber) {
-  //   if (loading) {
-  //     return <p>Loading...</p>;
-  //   }
-  // }
-
+    fetchSurahData();
+  }, [surahNumber]);
+  console.log(surahTranslation, surah);
   if (error) {
     return <p>Error: {error}</p>;
   }
-  console.log(surah);
+
+  function capitalizeFirstWord(str) {
+    const words = str.split(" ");
+
+    words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+
+    return words.join(" ");
+  }
   return (
     <section className="flex  mx-20">
       <MushafReaderSurahBar />
@@ -61,25 +70,33 @@ const MushafReader = () => {
                   {surah.englishNameTranslation} - ({surah.englishName}){" "}
                   {surah.name}
                 </h1>
-                <h3 className="text-center text-[#faebd7] text-3xl font-medium mt-12 mb-4">
+                {/* <h3 className="text-center text-[#faebd7] text-3xl font-medium mt-12 mb-4">
                   بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
-                </h3>
-                <div>
+                </h3> */}
+                <div className="mt-8">
                   <ul>
-                    {surah.ayahs
-                      .filter((ayah) => ayah.numberInSurah !== 1)
-                      .map((ayah) => (
+                    {surah.ayahs.map((ayah) => {
+                      const translation = surahTranslation.ayahs.find(
+                        (tAyah) => tAyah.number === ayah.number
+                      ); // Find the corresponding translation
+                      return (
                         <li
                           key={ayah.number}
                           className="text-right text-[#faebd7] text-2xl leading-10 font-medium mb-4"
                         >
                           <article className="flex justify-between gap-x-8  text-[#faebd7]">
-                            <strong>{ayah.numberInSurah - 1}</strong>{" "}
-                            {ayah.text}
+                            <strong>{ayah.numberInSurah}</strong> {ayah.text}
                           </article>
+                          {translation && (
+                            <p className="text-left text-gray-300 text-xl mt-2">
+                              {capitalizeFirstWord(translation.text)}
+                            </p>
+                          )}
+
                           <hr className="mt-4 border-[1.5px] border-white"></hr>
                         </li>
-                      ))}
+                      );
+                    })}
                   </ul>
                 </div>
               </>
@@ -99,7 +116,7 @@ export default MushafReader;
 
 export function MushafReaderSurahBar() {
   return (
-    <section className="overflow-y-scroll scrollbar-hide bg-lime-950 ">
+    <section className="overflow-y-scroll scrollbar-hide bg-lime-950 rounded-lg">
       <div
         className="grid gap-3 h-[80vh] opacity-85 -z-10 px-4 py-6 flex-[0.25]"
         style={{
