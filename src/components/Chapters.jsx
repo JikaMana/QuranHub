@@ -16,127 +16,6 @@ const Chapters = ({
   const NOT_ALL_SURAHS = 12;
   const ref = useRef(null);
 
-  // const surahPages = {
-  //   1: 1, // Al-Fatihah
-  //   2: 2, // Al-Baqarah
-  //   3: 50, // Al-Imran
-  //   4: 77, // An-Nisa'
-  //   5: 106, // Al-Ma'idah
-  //   6: 128, // Al-An'am
-  //   7: 151, // Al-A'raf
-  //   8: 177, // Al-Anfal
-  //   9: 187, // At-Tawbah
-  //   10: 208, // Yunus
-  //   11: 221, // Hud
-  //   12: 235, // Yusuf
-  //   13: 249, // Ar-Ra'd
-  //   14: 255, // Ibrahim
-  //   15: 262, // Al-Hijr
-  //   16: 267, // An-Nahl
-  //   17: 282, // Al-Isra
-  //   18: 293, // Al-Kahf
-  //   19: 305, // Maryam
-  //   20: 312, // Ta-Ha
-  //   21: 322, // Al-Anbiya
-  //   22: 332, // Al-Hajj
-  //   23: 342, // Al-Mu'minun
-  //   24: 350, // An-Nur
-  //   25: 359, // Al-Furqan
-  //   26: 367, // Ash-Shu'ara
-  //   27: 377, // An-Naml
-  //   28: 385, // Al-Qasas
-  //   29: 396, // Al-Ankabut
-  //   30: 404, // Ar-Rum
-  //   31: 411, // Luqman
-  //   32: 415, // As-Sajda
-  //   33: 418, // Al-Ahzab
-  //   34: 428, // Saba'
-  //   35: 434, // Fatir
-  //   36: 440, // Ya-Sin
-  //   37: 446, // As-Saffat
-  //   38: 453, // Sad
-  //   39: 458, // Az-Zumar
-  //   40: 467, // Ghafir
-  //   41: 477, // Fussilat
-  //   42: 483, // Ash-Shura
-  //   43: 489, // Az-Zukhruf
-  //   44: 496, // Ad-Dukhan
-  //   45: 499, // Al-Jathiya
-  //   46: 502, // Al-Ahqaf
-  //   47: 507, // Muhammad
-  //   48: 511, // Al-Fath
-  //   49: 515, // Al-Hujurat
-  //   50: 518, // Qaf
-  //   51: 520, // Adh-Dhariyat
-  //   52: 523, // At-Tur
-  //   53: 526, // An-Najm
-  //   54: 528, // Al-Qamar
-  //   55: 531, // Ar-Rahman
-  //   56: 534, // Al-Waqi'a
-  //   57: 537, // Al-Hadid
-  //   58: 541, // Al-Mujadila
-  //   59: 544, // Al-Hashr
-  //   60: 547, // Al-Mumtahina
-  //   61: 550, // As-Saff
-  //   62: 552, // Al-Jumua
-  //   63: 553, // Al-Munafiqun
-  //   64: 555, // At-Taghabun
-  //   65: 558, // At-Talaq
-  //   66: 560, // At-Tahrim
-  //   67: 562, // Al-Mulk
-  //   68: 564, // Al-Qalam
-  //   69: 566, // Al-Haqqah
-  //   70: 568, // Al-Ma'arij
-  //   71: 570, // Nuh
-  //   72: 572, // Al-Jinn
-  //   73: 574, // Al-Muzzammil
-  //   74: 575, // Al-Muddathir
-  //   75: 577, // Al-Qiyama
-  //   76: 578, // Al-Insan
-  //   77: 580, // Al-Mursalat
-  //   78: 582, // An-Naba
-  //   79: 583, // An-Nazi'at
-  //   80: 584, // Abasa
-  //   81: 585, // At-Takwir
-  //   82: 586, // Al-Infitar
-  //   83: 587, // Al-Mutaffifin
-  //   84: 589, // Al-Inshiqaq
-  //   85: 590, // Al-Buruj
-  //   86: 591, // At-Tariq
-  //   87: 592, // Al-A'la
-  //   88: 593, // Al-Ghashiya
-  //   89: 594, // Al-Fajr
-  //   90: 595, // Al-Balad
-  //   91: 596, // Ash-Shams
-  //   92: 597, // Al-Lail
-  //   93: 598, // Ad-Duha
-  //   94: 599, // Ash-Sharh
-  //   95: 600, // At-Tin
-  //   96: 600, // Al-Alaq
-  //   97: 601, // Al-Qadr
-  //   98: 601, // Al-Bayyina
-  //   99: 602, // Az-Zalzalah
-  //   100: 602, // Al-Adiyat
-  //   101: 603, // Al-Qari'a
-  //   102: 603, // At-Takathur
-  //   103: 604, // Al-Asr
-  //   104: 604, // Al-Humaza
-  //   105: 605, // Al-Fil
-  //   106: 605, // Quraysh
-  //   107: 606, // Al-Ma'un
-  //   108: 606, // Al-Kawthar
-  //   109: 607, // Al-Kafirun
-  //   110: 607, // An-Nasr
-  //   111: 608, // Al-Masad
-  //   112: 608, // Al-Ikhlas
-  //   113: 609, // Al-Falaq
-  //   114: 609, // An-Nas
-  // };
-
-  const handleSurahClick = (surahNumber) => {
-    setSelectedSurahPage(surahPages[surahNumber]);
-  };
-
   const showAllSurahsButton = () => {
     setShowAllSurahs((prevValue) => !prevValue);
     ref.current?.scrollIntoView();
@@ -201,7 +80,6 @@ const Chapters = ({
                 to={`/reader/${q.surah_number}`}
                 key={q.surah_number}
                 className="flex justify-between items-center p-2 border-[1px] border-solid border-lime-950 rounded-lg"
-                onClick={() => handleSurahClick(q.surah_number)}
               >
                 <div className="flex items-center gap-x-2">
                   <div className="bg-[#317869] w-7 h-7 rounded-sm ">
@@ -248,34 +126,32 @@ const Chapters = ({
               </div>
 
               <div className="inline-block w-full p-2 border-[1px] border-solid  bg-[#faebd7]">
-                {juz.surahs?.map((surah, sIndex) => (
-                  <Link
-                    to={`/reader/${q.surah_number}`}
-                    key={sIndex}
-                    className="flex justify-between py-2"
-                  >
-                    <div className="flex items-center gap-x-2">
-                      <div className="bg-[#317869] w-7 h-7 rounded-sm ">
-                        <p className="text-md text-lime-950 text-center">
-                          {surah.number}
+                {juz.surahs?.map((surah, index) => (
+                  <Link to={`/reader/${surah.number}`}>
+                    <div key={index} className="flex justify-between py-2">
+                      <div className="flex items-center gap-x-2">
+                        <div className="bg-[#317869] w-7 h-7 rounded-sm ">
+                          <p className="text-md text-lime-950 text-center">
+                            {surah.number}
+                          </p>
+                        </div>
+                        <div>
+                          <h2 className="font-bold text-lime-900 text-base">
+                            {surah.surahNameTransliteration}
+                          </h2>
+                          <p className=" text-lime-900 text-xs font-medium">
+                            {surah.surahNameTransliteration}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="grid">
+                        <h3 className="font-bold text-lime-900 text-base justify-self-end">
+                          {surah.surahNameTransliteration}
+                        </h3>
+                        <p className=" text-lime-900 text-xs font-medium justify-self-end">
+                          {surah.ayat} {surah.endAyat} Verses
                         </p>
                       </div>
-                      <div>
-                        <h2 className="font-bold text-lime-900 text-base">
-                          {surah.surahNameTransliteration}
-                        </h2>
-                        <p className=" text-lime-900 text-xs font-medium">
-                          {surah.surahNameTransliteration}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="grid">
-                      <h3 className="font-bold text-lime-900 text-base justify-self-end">
-                        {surah.surahNameTransliteration}
-                      </h3>
-                      <p className=" text-lime-900 text-xs font-medium justify-self-end">
-                        {surah.ayat} {surah.endAyat} Verses
-                      </p>
                     </div>
                   </Link>
                 ))}
