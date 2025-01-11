@@ -16,13 +16,13 @@ const MushafReader = () => {
       setSurah(null);
       return;
     }
-    const API = "http://api.alquran.cloud/v1/surah/";
+    const API_URL = `http://api.alquran.cloud/v1/surah/${surahNumber}`;
 
     const fetchSurahData = async () => {
       try {
         const [surahResponse, translationResponse] = await Promise.all([
-          fetch(`http://api.alquran.cloud/v1/surah/${surahNumber}`),
-          fetch(`http://api.alquran.cloud/v1/surah/${surahNumber}/en.asad`),
+          fetch(API_URL),
+          fetch(`${API_URL}/en.asad`),
         ]);
 
         if (!surahResponse.ok || !translationResponse.ok) {
@@ -70,9 +70,7 @@ const MushafReader = () => {
                   {surah.englishNameTranslation} - ({surah.englishName}){" "}
                   {surah.name}
                 </h1>
-                {/* <h3 className="text-center text-[#faebd7] text-3xl font-medium mt-12 mb-4">
-                  بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
-                </h3> */}
+
                 <div className="mt-8">
                   <ul>
                     {surah.ayahs.map((ayah) => {
@@ -88,7 +86,7 @@ const MushafReader = () => {
                             <strong>{ayah.numberInSurah}</strong> {ayah.text}
                           </article>
                           {translation && (
-                            <p className="text-left text-gray-300 text-xl mt-2">
+                            <p className="text-left text-gray-300 text-xl ml-16 mt-2">
                               {capitalizeFirstWord(translation.text)}
                             </p>
                           )}
