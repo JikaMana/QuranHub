@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import quranData from "../data/chapters.js";
 import { Link } from "react-router-dom";
-import MushafReader from "../pages/MushafReader.jsx";
 
 const Chapters = ({
   sortType,
@@ -199,7 +198,7 @@ const Chapters = ({
             })
             .map((q) => (
               <Link
-                to="/reader"
+                to={`/reader/${q.surah_number}`}
                 key={q.surah_number}
                 className="flex justify-between items-center p-2 border-[1px] border-solid border-lime-950 rounded-lg"
                 onClick={() => handleSurahClick(q.surah_number)}
@@ -250,7 +249,11 @@ const Chapters = ({
 
               <div className="inline-block w-full p-2 border-[1px] border-solid  bg-[#faebd7]">
                 {juz.surahs?.map((surah, sIndex) => (
-                  <div key={sIndex} className="flex justify-between py-2">
+                  <Link
+                    to={`/reader/${q.surah_number}`}
+                    key={sIndex}
+                    className="flex justify-between py-2"
+                  >
                     <div className="flex items-center gap-x-2">
                       <div className="bg-[#317869] w-7 h-7 rounded-sm ">
                         <p className="text-md text-lime-950 text-center">
@@ -274,7 +277,7 @@ const Chapters = ({
                         {surah.ayat} {surah.endAyat} Verses
                       </p>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

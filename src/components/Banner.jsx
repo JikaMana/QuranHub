@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Banner = () => {
   return (
@@ -21,18 +22,21 @@ const Banner = () => {
         accesible experience for all.
       </p>
       <div className="flex flex-col sm:flex-row  gap-y-3 mb-6 lg:max-w-2xl gap-x-4">
-        <button
+        <Link
+          to="/reader"
           className="bg-white px-10
-          py-3 rounded-full text-lime-950 font-3 font-semibold"
+          py-3 rounded-full text-lime-950 font-3 font-semibold text-center"
         >
           Start Reading <i className="fa-solid fa-book"></i>
-        </button>
-        <button
+        </Link>
+
+        <Link
+          to="/audio"
           className="bg-yellow-500 px-10
-          py-3 rounded-full text-lime-950 font-3 font-sans font-bold"
+          py-3 rounded-full text-lime-950 font-3 font-sans font-bold text-center"
         >
           Listen Audio <i className="fa-solid fa-microphone"></i>
-        </button>
+        </Link>
       </div>
     </section>
   );

@@ -41,7 +41,7 @@ const YourSources = () => {
           through the <span className="font-bold">Prophet Muhammad</span> (peace
           be upon him)
         </p>
-        <Link to="/">
+        <Link to="/about-quran">
           <button
             className="bg-yellow-500
           px-10

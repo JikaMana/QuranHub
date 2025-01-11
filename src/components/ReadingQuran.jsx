@@ -34,17 +34,19 @@ const ReadingQuran = () => {
               transformative journey through the sacred text of Islam.
             </p>
             <div className="flex flex-col gap-y-3 mb-6">
-              <button className="bg-lime-800 px-4 py-3 rounded-full text-white font-3 font-semibold">
-                <Link to="/reader">
-                  Start Reading <i className="fa-solid fa-book"></i>
-                </Link>
-              </button>
+              <Link
+                to="/reader"
+                className="bg-lime-800 px-4 py-3 rounded-full text-white font-3 font-semibold text-center"
+              >
+                Start Reading <i className="fa-solid fa-book"></i>
+              </Link>
 
-              <button className="bg-yellow-500 px-4 py-3 rounded-full text-lime-950 font-3 font-sans">
-                <Link to="/audio">
-                  Listen Audio <i className="fa-solid fa-microphone"></i>
-                </Link>
-              </button>
+              <Link
+                to="/audio"
+                className="bg-yellow-500 px-4 py-3 rounded-full text-lime-950 font-3 font-sans text-center"
+              >
+                Listen Audio <i className="fa-solid fa-microphone"></i>
+              </Link>
             </div>
           </div>
           <div>

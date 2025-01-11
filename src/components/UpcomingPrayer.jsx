@@ -112,7 +112,7 @@ const UpcomingPrayer = () => {
                 </div>
                 <p className="text-xl text-lime-950">
                   Next prayer is{" "}
-                  <span className="font-bold"> {nextPrayer}</span>
+                  <span className="font-bold"> {nextPrayer} </span>
                   in <span className="font-bold"> {timeLeft}</span>
                 </p>
               </div>

@@ -16,6 +16,8 @@ import { useEffect } from "react";
 import SingleBlogDetail, { blogLoader } from "./pages/SingleBlogDetail";
 import Timings from "./pages/Timings";
 import AudioListener from "./pages/audioListener";
+import QuranLayout from "./layouts/QuranLayout";
+import AboutQuran from "./pages/AboutQuran";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,10 +30,14 @@ const router = createBrowserRouter(
           element={<SingleBlogDetail />}
           loader={blogLoader}
         />
+      </Route>
+      <Route element={<QuranLayout />}>
+        <Route path="/about-quran" element={<AboutQuran />} />
+        <Route path="/salat" element={<Timings />} />
         <Route path="/reader" element={<MushafReader />} />
+        <Route path="/reader/:surahNumber" element={<MushafReader />} />
         <Route path="/audio" element={<AudioListener />} />
       </Route>
-      <Route path="/salat" element={<Timings />} />
 
       <Route path="*" element={<NotFoundPage />} />
     </>
