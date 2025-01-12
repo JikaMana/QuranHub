@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import quranData from "../data/chapters.js";
 import { Link, useParams } from "react-router-dom";
-import PlayButton from "../components/PlayButton.jsx";
+import AudioPlayer from "../components/AudioPlayer.jsx";
 
 const MushafReader = () => {
   const [surah, setSurah] = useState(null);
+  const [audio, setAudio] = useState(null);
   const [surahTranslation, setSurahTranslation] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,20 +22,28 @@ const MushafReader = () => {
 
     const fetchSurahData = async () => {
       try {
-        const [surahResponse, translationResponse] = await Promise.all([
-          fetch(API_URL),
-          fetch(`${API_URL}/en.pickthall`),
-        ]);
+        const [surahResponse, translationResponse, audioResponse] =
+          await Promise.all([
+            fetch(API_URL),
+            fetch(`${API_URL}/en.pickthall`),
+            fetch(`${API_URL}/ar.alafasy`),
+          ]);
 
         if (!surahResponse.ok || !translationResponse.ok) {
           throw new Error("Failed to fetch Surah or its translation.");
         }
 
+        if (!audioResponse.ok) {
+          throw new Error("Failed to fetch Audio from API");
+        }
+
         const surahData = await surahResponse.json();
         const translationData = await translationResponse.json();
+        const audioData = await audioResponse.json();
 
         setSurah(surahData.data);
         setSurahTranslation(translationData.data);
+        setAudio(audioData.data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -43,9 +52,9 @@ const MushafReader = () => {
     };
     fetchSurahData();
   }, [surahNumber]);
-  console.log(surahTranslation, surah);
+
   if (error) {
-    return <p>Error: {error}</p>;
+    alert(error);
   }
 
   function capitalizeFirstWord(str) {
@@ -55,6 +64,7 @@ const MushafReader = () => {
 
     return words.join(" ");
   }
+
   return (
     <section className="flex  mx-20">
       <MushafReaderSurahBar />
@@ -71,10 +81,9 @@ const MushafReader = () => {
                   {surah.englishNameTranslation} - ({surah.englishName}){" "}
                   {surah.name}
                 </h1>
-
                 <div className="mt-8">
                   <ul>
-                    {surah.ayahs.map((ayah) => {
+                    {surah.ayahs.map((ayah, index) => {
                       const translation = surahTranslation.ayahs.find(
                         (tAyah) => tAyah.number === ayah.number
                       ); // Find the corresponding translation
@@ -91,7 +100,12 @@ const MushafReader = () => {
                               {capitalizeFirstWord(translation.text)}
                             </p>
                           )}
-                          <PlayButton />
+                          <AudioPlayer
+                            // ayahAudio={ayah.audio}
+                            ayahNumber={ayah.number}
+                            index={index}
+                            audio={audio}
+                          />
                           <hr className="mt-4 border-[1.5px] border-white"></hr>
                         </li>
                       );
