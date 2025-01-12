@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import quranData from "../data/chapters.js";
 import { Link, useParams } from "react-router-dom";
+import PlayButton from "../components/PlayButton.jsx";
 
 const MushafReader = () => {
   const [surah, setSurah] = useState(null);
@@ -22,7 +23,7 @@ const MushafReader = () => {
       try {
         const [surahResponse, translationResponse] = await Promise.all([
           fetch(API_URL),
-          fetch(`${API_URL}/en.asad`),
+          fetch(`${API_URL}/en.pickthall`),
         ]);
 
         if (!surahResponse.ok || !translationResponse.ok) {
@@ -90,7 +91,7 @@ const MushafReader = () => {
                               {capitalizeFirstWord(translation.text)}
                             </p>
                           )}
-
+                          <PlayButton />
                           <hr className="mt-4 border-[1.5px] border-white"></hr>
                         </li>
                       );

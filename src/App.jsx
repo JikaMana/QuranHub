@@ -15,7 +15,7 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import SingleBlogDetail, { blogLoader } from "./pages/SingleBlogDetail";
 import Timings from "./pages/Timings";
-import AudioListener from "./pages/audioListener";
+import AudioListener from "./pages/AudioListener";
 import QuranLayout from "./layouts/QuranLayout";
 import AboutQuran from "./pages/AboutQuran";
 

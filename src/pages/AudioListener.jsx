@@ -16,9 +16,14 @@ const AudioListener = () => {
         >
           Come back later
         </p>
-      </div>{" "}
+      </div>
     </section>
   );
 };
-
 export default AudioListener;
+
+// const AudioLoader = async ({ params }) => {
+//   const data = AudioDetails[Number(params.AudioID) - 1];
+//   return data;
+// };
+// export { AudioListener as default, AudioLoader };
