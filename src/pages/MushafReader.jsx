@@ -9,12 +9,13 @@ const MushafReader = () => {
   const [surahTranslation, setSurahTranslation] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentAyah, setCurrentAyah] = useState(null);
 
   const { surahNumber } = useParams();
 
   useEffect(() => {
+    // Do not attempt to fetch if no surahNumber is provided
     if (!surahNumber) {
-      // Do not attempt to fetch if no surahNumber is provided
       setSurah(null);
       return;
     }
@@ -54,9 +55,8 @@ const MushafReader = () => {
   }, [surahNumber]);
 
   if (error) {
-    alert(error);
+    console.log(error);
   }
-
   function capitalizeFirstWord(str) {
     const words = str.split(" ");
 
@@ -64,6 +64,13 @@ const MushafReader = () => {
 
     return words.join(" ");
   }
+
+  const handleNextAyah = (ayahNumber) => {
+    const nextAyah = surah.ayahs.find((a) => a.number === ayahNumber + 1);
+    if (nextAyah) {
+      setCurrentAyah(nextAyah.number);
+    }
+  };
 
   return (
     <section className="flex  mx-20">
@@ -100,12 +107,14 @@ const MushafReader = () => {
                               {capitalizeFirstWord(translation.text)}
                             </p>
                           )}
+
                           <AudioPlayer
-                            // ayahAudio={ayah.audio}
                             ayahNumber={ayah.number}
-                            index={index}
-                            audio={audio}
+                            audioSrc={audio.ayahs[index].audio}
+                            isCurrent={currentAyah === ayah.number} // Check if this is the active Ayah
+                            onAudioEnd={() => handleNextAyah(ayah.number)} // Trigger next Ayah
                           />
+
                           <hr className="mt-4 border-[1.5px] border-white"></hr>
                         </li>
                       );
@@ -129,7 +138,7 @@ export default MushafReader;
 
 export function MushafReaderSurahBar() {
   return (
-    <section className="overflow-y-scroll scrollbar-hide bg-lime-950 rounded-lg">
+    <section className="overflow-y-scroll scrollbar-hide bg-lime-950 opacity-85 rounded-lg">
       <div
         className="grid gap-3 h-[80vh] opacity-85 -z-10 px-4 py-6 flex-[0.25]"
         style={{
@@ -171,10 +180,3 @@ export function MushafReaderSurahBar() {
     </section>
   );
 }
-// .filter((q) => {
-//         const searchInput = submitInput.toLowerCase();
-//         return (
-//           searchInput === "" ||
-//           q.surahNameTransliteration?.toLowerCase().includes(searchInput)
-//         );
-//       })
