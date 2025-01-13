@@ -10,6 +10,7 @@ const MushafReader = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [firstAyat, setFirstAyat] = useState(false);
 
   const { surahNumber } = useParams();
 
@@ -61,12 +62,15 @@ const MushafReader = () => {
     fetchSurahData();
   }, [surahNumber]);
 
-  const handleAudioEnded = () => {
+  function handleAudioEnded(ayahInSurah) {
     setCurrentIndex((prevIndex) => {
-      const nextIndex = prevIndex + 1;
+      let skipNumber = ayahInSurah - prevIndex - 1;
+      console.log(skipNumber);
+      let nextIndex = skipNumber > 0 ? prevIndex + skipNumber : prevIndex + 1;
+
       return nextIndex < surah.ayahs.length ? nextIndex : prevIndex;
     });
-  };
+  }
 
   return (
     <section className="flex  mx-20">
@@ -108,9 +112,11 @@ const MushafReader = () => {
                           <AudioPlayer
                             ayahNumber={ayah.numberInSurah}
                             audioSrc={audio.ayahs[index].audio}
-                            setAudioEnded={handleAudioEnded}
+                            setAudioEnded={() =>
+                              handleAudioEnded(ayah.numberInSurah)
+                            }
                             autoPlay={isActive}
-                            isActive={isActive} // Pass active state
+                            isActive={isActive}
                           />
                           <hr className="mt-4 border-[1.5px] border-white"></hr>
                         </li>

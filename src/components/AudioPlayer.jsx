@@ -9,7 +9,6 @@ const AudioPlayer = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
-
   useEffect(() => {
     if (isActive && autoPlay) {
       audioRef.current.play().then(() => {
@@ -21,10 +20,12 @@ const AudioPlayer = ({
     }
   }, [isActive, autoPlay]);
 
-  console.log(audioRef.current);
-
   const handlePlayPause = () => {
-    if (audioRef.current.paused) {
+    if (audioRef.current.played && isPlaying == false) {
+      setIsPlaying(true);
+      audioRef.current.pause();
+      setAudioEnded();
+    } else if (audioRef.current.paused) {
       audioRef.current.play();
       setIsPlaying(true);
       console.log("Audio Is Playing");
