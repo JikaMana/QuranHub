@@ -9,12 +9,19 @@ const MushafReader = () => {
   const [surahTranslation, setSurahTranslation] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [currentAyah, setCurrentAyah] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const { surahNumber } = useParams();
 
+  function capitalizeFirstWord(str) {
+    const words = str.split(" ");
+
+    words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+
+    return words.join(" ");
+  }
+
   useEffect(() => {
-    // Do not attempt to fetch if no surahNumber is provided
     if (!surahNumber) {
       setSurah(null);
       return;
@@ -54,22 +61,11 @@ const MushafReader = () => {
     fetchSurahData();
   }, [surahNumber]);
 
-  if (error) {
-    console.log(error);
-  }
-  function capitalizeFirstWord(str) {
-    const words = str.split(" ");
-
-    words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
-
-    return words.join(" ");
-  }
-
-  const handleNextAyah = (ayahNumber) => {
-    const nextAyah = surah.ayahs.find((a) => a.number === ayahNumber + 1);
-    if (nextAyah) {
-      setCurrentAyah(nextAyah.number);
-    }
+  const handleAudioEnded = () => {
+    setCurrentIndex((prevIndex) => {
+      const nextIndex = prevIndex + 1;
+      return nextIndex < surah.ayahs.length ? nextIndex : prevIndex;
+    });
   };
 
   return (
@@ -93,13 +89,15 @@ const MushafReader = () => {
                     {surah.ayahs.map((ayah, index) => {
                       const translation = surahTranslation.ayahs.find(
                         (tAyah) => tAyah.number === ayah.number
-                      ); // Find the corresponding translation
+                      );
+                      const isActive = index === currentIndex;
+
                       return (
                         <li
                           key={ayah.number}
                           className="text-right text-[#faebd7] text-2xl leading-10 font-medium mb-4"
                         >
-                          <article className="flex justify-between gap-x-8  text-[#faebd7]">
+                          <article className="flex justify-between gap-x-8 text-[#faebd7]">
                             <strong>{ayah.numberInSurah}</strong> {ayah.text}
                           </article>
                           {translation && (
@@ -107,14 +105,13 @@ const MushafReader = () => {
                               {capitalizeFirstWord(translation.text)}
                             </p>
                           )}
-
                           <AudioPlayer
-                            ayahNumber={ayah.number}
+                            ayahNumber={ayah.numberInSurah}
                             audioSrc={audio.ayahs[index].audio}
-                            isCurrent={currentAyah === ayah.number} // Check if this is the active Ayah
-                            onAudioEnd={() => handleNextAyah(ayah.number)} // Trigger next Ayah
+                            setAudioEnded={handleAudioEnded}
+                            autoPlay={isActive}
+                            isActive={isActive} // Pass active state
                           />
-
                           <hr className="mt-4 border-[1.5px] border-white"></hr>
                         </li>
                       );
