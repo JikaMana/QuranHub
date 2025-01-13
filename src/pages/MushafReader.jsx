@@ -10,6 +10,7 @@ const MushafReader = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const audioRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   const { surahNumber } = useParams();
 
@@ -55,7 +56,7 @@ const MushafReader = () => {
     fetchSurahData();
   }, [surahNumber]);
 
-  const playAllAudio = () => {
+  const playAudio = () => {
     if (!audio || !audio.ayahs || audio.ayahs.length === 0) return;
 
     let currentIndex = 0;
@@ -69,6 +70,25 @@ const MushafReader = () => {
 
     audioRef.current.onended = playNext;
     playNext();
+    setIsPaused(false);
+  };
+
+  const pauseAudio = () => {
+    if (audioRef.current) {
+      if (isPaused) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+      setIsPaused(!isPaused);
+    }
+  };
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0; // Reset the audio timer to
+    }
   };
 
   return (
@@ -90,14 +110,14 @@ const MushafReader = () => {
                   </h1>
                   <div className="flex gap-x-4 justify-center">
                     <button
-                      onClick={playAllAudio}
+                      onClick={pauseAudio}
                       className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
                     >
-                      Pause
+                      {isPaused ? "Resume" : "Pause"}
                       <FaPause size={16} />
                     </button>
                     <button
-                      onClick={playAllAudio}
+                      onClick={playAudio}
                       className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
                     >
                       Play
@@ -105,7 +125,7 @@ const MushafReader = () => {
                     </button>
 
                     <button
-                      onClick={playAllAudio}
+                      onClick={stopAudio}
                       className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
                     >
                       Stop
