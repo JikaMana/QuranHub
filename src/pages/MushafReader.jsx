@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import quranData from "../data/chapters.js";
 import { Link, useParams } from "react-router-dom";
-import AudioPlayer from "../components/AudioPlayer.jsx";
+import { FaPlay, FaPause, FaStop } from "react-icons/fa";
 
 const MushafReader = () => {
   const [surah, setSurah] = useState(null);
-  const [audio, setAudio] = useState(null);
   const [surahTranslation, setSurahTranslation] = useState(null);
+  const [audio, setAudio] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [firstAyat, setFirstAyat] = useState(false);
+  const audioRef = useRef(null);
 
   const { surahNumber } = useParams();
 
   function capitalizeFirstWord(str) {
     const words = str.split(" ");
-
     words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
-
     return words.join(" ");
   }
 
@@ -38,12 +35,8 @@ const MushafReader = () => {
             fetch(`${API_URL}/ar.alafasy`),
           ]);
 
-        if (!surahResponse.ok || !translationResponse.ok) {
-          throw new Error("Failed to fetch Surah or its translation.");
-        }
-
-        if (!audioResponse.ok) {
-          throw new Error("Failed to fetch Audio from API");
+        if (!surahResponse.ok || !translationResponse.ok || !audioResponse.ok) {
+          throw new Error("Failed to fetch data from the API.");
         }
 
         const surahData = await surahResponse.json();
@@ -62,40 +55,73 @@ const MushafReader = () => {
     fetchSurahData();
   }, [surahNumber]);
 
-  function handleAudioEnded(ayahInSurah) {
-    setCurrentIndex((prevIndex) => {
-      let skipNumber = ayahInSurah - prevIndex - 1;
-      console.log(skipNumber);
-      let nextIndex = skipNumber > 0 ? prevIndex + skipNumber : prevIndex + 1;
+  const playAllAudio = () => {
+    if (!audio || !audio.ayahs || audio.ayahs.length === 0) return;
 
-      return nextIndex < surah.ayahs.length ? nextIndex : prevIndex;
-    });
-  }
+    let currentIndex = 0;
+    const playNext = () => {
+      if (currentIndex < audio.ayahs.length) {
+        audioRef.current.src = audio.ayahs[currentIndex].audio;
+        audioRef.current.play();
+        currentIndex++;
+      }
+    };
+
+    audioRef.current.onended = playNext;
+    playNext();
+  };
 
   return (
     <section className="flex  mx-20">
       <MushafReaderSurahBar />
-      <div className="flex-[0.7] bg-lime-950 opacity-85 px-12 pt-4 pb-8 w-full mx-auto overflow-y-scroll scrollbar-hide rounded-2xl h-[80vh]">
+      <div className="flex-[0.7] bg-lime-950 opacity-85 px-12 pt-4 pb-8 w-full mx-auto h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl ">
         {surahNumber ? (
           <>
-            {loading === true ? (
-              <p className=" text-[#faebd7] text-xl font-medium mt-4 mb-4">
+            {loading ? (
+              <p className="text-[#faebd7] text-xl font-medium mt-4 mb-4">
                 Loading...
               </p>
             ) : (
               <>
-                <h1 className="text-center text-3xl text-[#faebd7] font-medium">
-                  {surah.englishNameTranslation} - ({surah.englishName}){" "}
-                  {surah.name}
-                </h1>
+                <div className="fixewd h-fulwl">
+                  <h1 className="text-center text-3xl text-[#faebd7] font-medium">
+                    {surah.englishNameTranslation} - ({surah.englishName}){" "}
+                    {surah.name}
+                  </h1>
+                  <div className="flex gap-x-4 justify-center">
+                    <button
+                      onClick={playAllAudio}
+                      className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                    >
+                      Pause
+                      <FaPause size={16} />
+                    </button>
+                    <button
+                      onClick={playAllAudio}
+                      className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                    >
+                      Play
+                      <FaPlay size={16} />
+                    </button>
+
+                    <button
+                      onClick={playAllAudio}
+                      className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                    >
+                      Stop
+                      <FaStop size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                <audio ref={audioRef} />
+
                 <div className="mt-8">
                   <ul>
-                    {surah.ayahs.map((ayah, index) => {
+                    {surah.ayahs.map((ayah) => {
                       const translation = surahTranslation.ayahs.find(
                         (tAyah) => tAyah.number === ayah.number
                       );
-                      const isActive = index === currentIndex;
-
                       return (
                         <li
                           key={ayah.number}
@@ -109,16 +135,7 @@ const MushafReader = () => {
                               {capitalizeFirstWord(translation.text)}
                             </p>
                           )}
-                          <AudioPlayer
-                            ayahNumber={ayah.numberInSurah}
-                            audioSrc={audio.ayahs[index].audio}
-                            setAudioEnded={() =>
-                              handleAudioEnded(ayah.numberInSurah)
-                            }
-                            autoPlay={isActive}
-                            isActive={isActive}
-                          />
-                          <hr className="mt-4 border-[1.5px] border-white"></hr>
+                          <hr className="mt-4 border-[1.5px] border-white" />
                         </li>
                       );
                     })}
@@ -128,7 +145,7 @@ const MushafReader = () => {
             )}
           </>
         ) : (
-          <div className=" text-[#faebd7] text-xl font-medium mt-4 mb-4">
+          <div className="text-[#faebd7] text-xl font-medium mt-4 mb-4">
             <h2>No Surah has been selected</h2>
           </div>
         )}
@@ -153,7 +170,6 @@ export function MushafReaderSurahBar() {
             to={`/reader/${q.surah_number}`}
             key={q.surah_number}
             className="flex justify-between items-center p-2 border-[1px] border-solid border-lime-950 rounded-lg bg-[#faebd7]"
-            onClick={() => handleSurahClick(q.surah_number)}
           >
             <div className="flex items-center gap-x-2">
               <div className="bg-[#317869] w-7 h-7 rounded-sm">
