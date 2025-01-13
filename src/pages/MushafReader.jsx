@@ -105,8 +105,8 @@ const MushafReader = () => {
               <>
                 <div className="fixewd h-fulwl">
                   <h1 className="text-center text-3xl text-[#faebd7] font-medium">
-                    {surah.englishNameTranslation} - ({surah.englishName}){" "}
-                    {surah.name}
+                    {surah?.englishNameTranslation} - ({surah?.englishName}){" "}
+                    {surah?.name}
                   </h1>
                   <div className="flex gap-x-4 justify-center">
                     <button
@@ -138,7 +138,7 @@ const MushafReader = () => {
 
                 <div className="mt-8">
                   <ul>
-                    {surah.ayahs.map((ayah) => {
+                    {surah?.ayahs.map((ayah) => {
                       const translation = surahTranslation.ayahs.find(
                         (tAyah) => tAyah.number === ayah.number
                       );
