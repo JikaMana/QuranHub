@@ -25,7 +25,7 @@ const MushafReader = () => {
       setSurah(null);
       return;
     }
-    const API_URL = `http://api.alquran.cloud/v1/surah/${surahNumber}`;
+    const API_URL = `https://api.alquran.cloud/v1/surah/${surahNumber}`;
 
     const fetchSurahData = async () => {
       try {
