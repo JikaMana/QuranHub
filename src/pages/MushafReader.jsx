@@ -99,7 +99,7 @@ const MushafReader = () => {
           <>
             {loading ? (
               <p className="text-[#faebd7] text-xl font-medium mt-4 mb-4">
-                Loading...
+                Loading Verses...
               </p>
             ) : (
               <>
