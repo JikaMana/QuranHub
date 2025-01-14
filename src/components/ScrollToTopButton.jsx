@@ -9,7 +9,7 @@ const ScrollToTopButton = ({ ToTopRef }) => {
   return (
     <button
       onClick={scrollToTop}
-      className="z-10 absolute right-0 rounded-full shadow-lg  transition duration-300"
+      className="z-10 absolute  right-0 rounded-full shadow-lg  transition duration-300"
       aria-label="Scroll to top"
     >
       <FaArrowCircleUp size={30} className=" text-[#faebd7] " />

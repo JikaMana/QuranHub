@@ -99,7 +99,7 @@ const MushafReader = () => {
       <MushafReaderSurahBar />
       <div
         ref={ToTopRef}
-        className="flex-[0.8] bg-lime-950 opacity-85 xl:px-12 px-4 sm:px-8 pt-4 pb-8 w-full mx-auto h-full lg:h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl"
+        className="lg:flex-[0.8] bg-lime-950 opacity-85 xl:px-12 px-4 sm:px-8 pt-4 pb-8 w-full mx-auto h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl"
       >
         {surahNumber ? (
           <>
