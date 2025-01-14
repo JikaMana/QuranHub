@@ -87,7 +87,7 @@ const MushafReader = () => {
   const stopAudio = () => {
     if (audioRef.current) {
       audioRef.current.pause();
-      audioRef.current.currentTime = 0; // Reset the audio timer to
+      audioRef.current.currentTime = 0; // Reset the audio timer to 0
     }
   };
 
