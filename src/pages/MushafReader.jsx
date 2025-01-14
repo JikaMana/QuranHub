@@ -92,9 +92,9 @@ const MushafReader = () => {
   };
 
   return (
-    <section className="flex  mx-20">
+    <section className="flex flex-col lg:flex-row gap-y-4 xl:mx-20 mx-4 lg:mx-10 h-screen lg:h-[80vh] overflow-hidden">
       <MushafReaderSurahBar />
-      <div className="flex-[0.7] bg-lime-950 opacity-85 px-12 pt-4 pb-8 w-full mx-auto h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl ">
+      <div className="flex-[0.8] bg-lime-950 opacity-85 xl:px-12 px-8 pt-4 pb-8 w-full mx-auto h-full lg:h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl">
         {surahNumber ? (
           <>
             {loading ? (
@@ -103,7 +103,7 @@ const MushafReader = () => {
               </p>
             ) : (
               <>
-                <div className="fixewd h-fulwl">
+                <div>
                   <h1 className="text-center text-3xl text-[#faebd7] font-medium">
                     {surah?.englishNameTranslation} - ({surah?.englishName}){" "}
                     {surah?.name}
@@ -178,9 +178,9 @@ export default MushafReader;
 
 export function MushafReaderSurahBar() {
   return (
-    <section className="overflow-y-scroll scrollbar-hide bg-lime-950 opacity-85 rounded-lg">
+    <section className="overflow-y-scroll scrollbar-hide bg-lime-950 opacity-85 rounded-lg  h-40 lg:h-[80vh]">
       <div
-        className="grid gap-3 h-[80vh] opacity-85 -z-10 px-4 py-6 flex-[0.25]"
+        className="grid gap-3 opacity-85 -z-10 px-4 py-6 flex-[0.25]"
         style={{
           gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
         }}
