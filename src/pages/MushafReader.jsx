@@ -94,7 +94,7 @@ const MushafReader = () => {
   return (
     <section className="flex flex-col lg:flex-row gap-y-4 xl:mx-20 mx-4 lg:mx-10 h-screen lg:h-[80vh] overflow-hidden">
       <MushafReaderSurahBar />
-      <div className="flex-[0.8] bg-lime-950 opacity-85 xl:px-12 px-8 pt-4 pb-8 w-full mx-auto h-full lg:h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl">
+      <div className="flex-[0.8] bg-lime-950 opacity-85 xl:px-12 px-4 sm:px-8 pt-4 pb-8 w-full mx-auto h-full lg:h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl">
         {surahNumber ? (
           <>
             {loading ? (
@@ -104,7 +104,7 @@ const MushafReader = () => {
             ) : (
               <>
                 <div>
-                  <h1 className="text-center text-3xl text-[#faebd7] font-medium">
+                  <h1 className="text-center text-2xl sm:text-3xl text-[#faebd7] font-medium">
                     {surah?.englishNameTranslation} - ({surah?.englishName}){" "}
                     {surah?.name}
                   </h1>
@@ -113,7 +113,6 @@ const MushafReader = () => {
                       onClick={pauseAudio}
                       className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
                     >
-                      {isPaused ? "Resume" : "Pause"}
                       <FaPause size={16} />
                     </button>
                     <button
@@ -128,7 +127,6 @@ const MushafReader = () => {
                       onClick={stopAudio}
                       className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
                     >
-                      Stop
                       <FaStop size={16} />
                     </button>
                   </div>
@@ -136,7 +134,7 @@ const MushafReader = () => {
 
                 <audio ref={audioRef} />
 
-                <div className="mt-8">
+                <div className="mt-4 sm:mt-8">
                   <ul>
                     {surah?.ayahs.map((ayah) => {
                       const translation = surahTranslation.ayahs.find(
@@ -179,17 +177,21 @@ export default MushafReader;
 export function MushafReaderSurahBar() {
   return (
     <section className="overflow-y-scroll scrollbar-hide bg-lime-950 opacity-85 rounded-lg  h-40 lg:h-[80vh]">
+      <h3 className="text-[#faebd7] text-xl font-medium  mt-2 sm:mt-4 ml-4">
+        Select Surah
+      </h3>
+
       <div
         className="grid gap-3 opacity-85 -z-10 px-4 py-6 flex-[0.25]"
         style={{
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
         }}
       >
         {quranData.quranBasedOnSurah.map((q) => (
           <Link
             to={`/reader/${q.surah_number}`}
             key={q.surah_number}
-            className="flex justify-between items-center p-2 border-[1px] border-solid border-lime-950 rounded-lg bg-[#faebd7]"
+            className="flex justify-between items-center p-1 sm:p-2 border-[1px] border-solid border-lime-950 rounded-lg bg-[#faebd7]"
           >
             <div className="flex items-center gap-x-2">
               <div className="bg-[#317869] w-7 h-7 rounded-sm">

@@ -6,7 +6,7 @@ const QuranLayout = () => {
 
   return (
     <>
-      <div className="m-10">
+      <div className="m-4 lg:m-10">
         <button
           onClick={() => navigate(-1)}
           className="flex items-center text-xl font-semibold gap-2 text-lime-950 hover:text-white  hover:bg-lime-950 px-2 py-1 rounded-md"
