@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import quranData from "../data/chapters.js";
 import { Link, useParams } from "react-router-dom";
 import { FaPlay, FaPause, FaStop } from "react-icons/fa";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 const MushafReader = () => {
   const [surah, setSurah] = useState(null);
@@ -9,8 +10,10 @@ const MushafReader = () => {
   const [audio, setAudio] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const audioRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
+
+  const audioRef = useRef(null);
+  const ToTopRef = useRef(null);
 
   const { surahNumber } = useParams();
 
@@ -94,7 +97,10 @@ const MushafReader = () => {
   return (
     <section className="flex flex-col lg:flex-row gap-y-4 xl:mx-20 mx-4 lg:mx-10 h-screen lg:h-[80vh] overflow-hidden">
       <MushafReaderSurahBar />
-      <div className="flex-[0.8] bg-lime-950 opacity-85 xl:px-12 px-4 sm:px-8 pt-4 pb-8 w-full mx-auto h-full lg:h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl">
+      <div
+        ref={ToTopRef}
+        className="flex-[0.8] bg-lime-950 opacity-85 xl:px-12 px-4 sm:px-8 pt-4 pb-8 w-full mx-auto h-full lg:h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl"
+      >
         {surahNumber ? (
           <>
             {loading ? (
@@ -134,7 +140,7 @@ const MushafReader = () => {
 
                 <audio ref={audioRef} />
 
-                <div className="mt-4 sm:mt-8">
+                <div className="mt-4 sm:mt-8 relative">
                   <ul>
                     {surah?.ayahs.map((ayah) => {
                       const translation = surahTranslation.ayahs.find(
@@ -158,6 +164,7 @@ const MushafReader = () => {
                       );
                     })}
                   </ul>
+                  <ScrollToTopButton ToTopRef={ToTopRef.current} />
                 </div>
               </>
             )}
