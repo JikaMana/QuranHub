@@ -11,6 +11,7 @@ const MushafReader = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const audioRef = useRef(null);
   const ToTopRef = useRef(null);
@@ -74,6 +75,7 @@ const MushafReader = () => {
     audioRef.current.onended = playNext;
     playNext();
     setIsPaused(false);
+    setIsDisabled(true);
   };
 
   const pauseAudio = () => {
@@ -92,6 +94,7 @@ const MushafReader = () => {
       audioRef.current.pause();
       audioRef.current.currentTime = 0; // Reset the audio timer to 0
     }
+    setIsDisabled(false);
   };
 
   return (
@@ -110,32 +113,48 @@ const MushafReader = () => {
             ) : (
               <>
                 <div>
-                  <h1 className="text-center text-2xl sm:text-3xl text-[#faebd7] font-medium">
-                    {surah?.englishNameTranslation} - ({surah?.englishName}){" "}
-                    {surah?.name}
-                  </h1>
-                  <div className="flex gap-x-4 justify-center">
-                    <button
-                      onClick={pauseAudio}
-                      className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
-                    >
-                      <FaPause size={16} />
-                    </button>
-                    <button
-                      onClick={playAudio}
-                      className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
-                    >
-                      Play
-                      <FaPlay size={16} />
-                    </button>
-
-                    <button
-                      onClick={stopAudio}
-                      className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
-                    >
-                      <FaStop size={16} />
-                    </button>
-                  </div>
+                  {surah ? (
+                    <h1 className="text-center text-2xl sm:text-3xl text-[#faebd7] font-medium">
+                      {surah?.englishNameTranslation} - ({surah?.englishName}){" "}
+                      {surah?.name}
+                    </h1>
+                  ) : (
+                    <h1 className="text-center text-2xl sm:text-3xl text-[#faebd7] font-medium">
+                      Check your Internet connection
+                    </h1>
+                  )}
+                  {surah && surahTranslation && (
+                    <div className="flex gap-x-4 justify-center">
+                      <button
+                        onClick={pauseAudio}
+                        className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                      >
+                        {isPaused === false ? (
+                          <FaPause size={16} />
+                        ) : (
+                          <FaPlay size={16} />
+                        )}
+                      </button>
+                      <button
+                        onClick={playAudio}
+                        className={`bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 flex items-center gap-x-2 ${
+                          isDisabled
+                            ? "opacity-50 cursor-not-allowed"
+                            : "hover:bg-[#e9dbcb]"
+                        }`}
+                        disabled={isDisabled} // Disable the button based on state
+                      >
+                        Start
+                        <FaPlay size={16} disable />
+                      </button>
+                      <button
+                        onClick={stopAudio}
+                        className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                      >
+                        <FaStop size={16} />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <audio ref={audioRef} />
@@ -164,7 +183,9 @@ const MushafReader = () => {
                       );
                     })}
                   </ul>
-                  <ScrollToTopButton ToTopRef={ToTopRef.current} />
+                  {surah && surahTranslation && (
+                    <ScrollToTopButton ToTopRef={ToTopRef.current} />
+                  )}
                 </div>
               </>
             )}
