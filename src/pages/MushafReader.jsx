@@ -12,6 +12,7 @@ const MushafReader = () => {
   const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [mushafMode, setMushafMode] = useState("both");
 
   const audioRef = useRef(null);
   const ToTopRef = useRef(null);
@@ -102,110 +103,203 @@ const MushafReader = () => {
     setIsDisabled(false);
   };
 
+  const handleModeChange = (mode) => {
+    setMushafMode(mode);
+  };
+
   return (
     <section className="flex flex-col lg:flex-row gap-y-4 xl:mx-20 mx-4 lg:mx-10 h-screen lg:h-[80vh] overflow-hidden">
       <MushafReaderSurahBar />
-      <div
-        ref={ToTopRef}
-        className="lg:flex-[0.8] bg-lime-950 opacity-85 xl:px-12 px-4 sm:px-8 pt-4 pb-8 w-full mx-auto h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl"
-      >
-        {surahNumber ? (
-          <>
-            {loading ? (
-              <p className="text-[#faebd7] text-xl font-medium mt-4 mb-4">
-                Loading Verses...
-              </p>
-            ) : (
-              <>
-                <div>
-                  {surah ? (
-                    <h1 className="text-center text-2xl sm:text-3xl text-[#faebd7] font-medium">
-                      {surah?.englishNameTranslation} - ({surah?.englishName}){" "}
-                      {surah?.name}
-                    </h1>
-                  ) : (
-                    <h1 className="text-center text-2xl sm:text-3xl text-[#faebd7] font-medium">
-                      Check your Internet connection
-                    </h1>
-                  )}
-                  {surah && surahTranslation && (
-                    <div className="flex gap-x-4 justify-center">
-                      <button
-                        onClick={pauseAudio}
-                        className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
-                      >
-                        {isPaused === false ? (
-                          <FaPause size={16} />
+      <main className="lg:flex-[0.8] mx-auto">
+        <div className="flex gap-x-2 ml-4 mb-2">
+          <button
+            onClick={() => handleModeChange("arabic")}
+            className={`bg-lime-950 opacity-85 px-4 py-1 text-[#faebd7] font-medium text-lg hover:scale-105 ${
+              mushafMode === "arabic" ? "bg-lime-700" : ""
+            }`}
+          >
+            Arabic
+          </button>
+          <button
+            onClick={() => handleModeChange("translation")}
+            className={`bg-lime-950 opacity-85 px-4 py-1 text-[#faebd7] font-medium text-lg hover:scale-105 ${
+              mushafMode === "translation" ? "bg-lime-700" : ""
+            }`}
+          >
+            Translation
+          </button>
+          <button
+            onClick={() => handleModeChange("both")}
+            className={`bg-lime-950 opacity-85 px-4 py-1 text-[#faebd7] font-medium text-lg hover:scale-105 ${
+              mushafMode === "both" ? "bg-lime-700" : ""
+            }`}
+          >
+            Both
+          </button>
+        </div>
+        <div
+          ref={ToTopRef}
+          className=" bg-lime-950 opacity-85 xl:px-12 px-4 sm:px-8 pt-4 pb-8 w-full  h-[80vh] overflow-y-scroll scrollbar-hide rounded-2xl"
+        >
+          {surahNumber ? (
+            <>
+              {loading ? (
+                <p className="text-[#faebd7] text-xl font-medium mt-4 mb-4">
+                  Loading Verses...
+                </p>
+              ) : (
+                <>
+                  <div>
+                    {surah ? (
+                      <h1 className="text-center text-2xl sm:text-3xl text-[#faebd7] font-medium">
+                        {surah?.englishNameTranslation} - ({surah?.englishName}){" "}
+                        {surah?.name}
+                      </h1>
+                    ) : (
+                      <h1 className="text-center text-2xl sm:text-3xl text-[#faebd7] font-medium">
+                        Check your Internet connection
+                      </h1>
+                    )}
+                    {surah && surahTranslation && (
+                      <div className="flex gap-x-4 justify-center">
+                        <button
+                          onClick={pauseAudio}
+                          className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                        >
+                          {isPaused === false ? (
+                            <FaPause size={16} />
+                          ) : (
+                            <FaPlay size={16} />
+                          )}
+                        </button>
+                        {isDisabled ? (
+                          <button
+                            onClick={playAudio}
+                            className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                          >
+                            Restart
+                            <FaRedo size={16} />
+                          </button>
                         ) : (
-                          <FaPlay size={16} />
+                          <button
+                            onClick={playAudio}
+                            className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                          >
+                            Start
+                            <FaPlay size={16} disable />
+                          </button>
                         )}
-                      </button>
-                      {isDisabled ? (
                         <button
-                          onClick={playAudio}
+                          onClick={stopAudio}
                           className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
                         >
-                          Restart
-                          <FaRedo size={16} />
+                          <FaStop size={16} />
                         </button>
-                      ) : (
-                        <button
-                          onClick={playAudio}
-                          className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
-                        >
-                          Start
-                          <FaPlay size={16} disable />
-                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <audio ref={audioRef} />
+
+                  {mushafMode === "both" && (
+                    <div className="mt-4 sm:mt-8 relative">
+                      <ul>
+                        {surah?.ayahs.map((ayah) => {
+                          const translation = surahTranslation.ayahs.find(
+                            (tAyah) => tAyah.number === ayah.number
+                          );
+                          return (
+                            <li
+                              key={ayah.number}
+                              className="text-right text-[#faebd7] text-2xl leading-10 font-medium mb-4"
+                            >
+                              <article className="flex justify-between gap-x-8 text-[#faebd7]">
+                                <strong>{ayah.numberInSurah}</strong>{" "}
+                                {ayah.text}
+                              </article>
+                              {translation && (
+                                <p className="text-left text-gray-300 text-xl ml-16 mt-2">
+                                  {capitalizeFirstWord(translation.text)}
+                                </p>
+                              )}
+                              <hr className="mt-4 border-[1.5px] border-white" />
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      {surah && surahTranslation && (
+                        <ScrollToTopButton ToTopRef={ToTopRef.current} />
                       )}
-                      <button
-                        onClick={stopAudio}
-                        className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
-                      >
-                        <FaStop size={16} />
-                      </button>
                     </div>
                   )}
-                </div>
+                  {mushafMode === "arabic" && (
+                    <div className="mt-4 sm:mt-8 relative">
+                      <ul>
+                        {surah?.ayahs.map((ayah) => {
+                          const translation = surahTranslation.ayahs.find(
+                            (tAyah) => tAyah.number === ayah.number
+                          );
+                          return (
+                            <li
+                              key={ayah.number}
+                              className="text-right text-[#faebd7] text-2xl leading-10 font-medium mb-4"
+                            >
+                              <article className="flex justify-between gap-x-8 text-[#faebd7]">
+                                <strong>{ayah.numberInSurah}</strong>{" "}
+                                {ayah.text}
+                              </article>
 
-                <audio ref={audioRef} />
-
-                <div className="mt-4 sm:mt-8 relative">
-                  <ul>
-                    {surah?.ayahs.map((ayah) => {
-                      const translation = surahTranslation.ayahs.find(
-                        (tAyah) => tAyah.number === ayah.number
-                      );
-                      return (
-                        <li
-                          key={ayah.number}
-                          className="text-right text-[#faebd7] text-2xl leading-10 font-medium mb-4"
-                        >
-                          <article className="flex justify-between gap-x-8 text-[#faebd7]">
-                            <strong>{ayah.numberInSurah}</strong> {ayah.text}
-                          </article>
-                          {translation && (
-                            <p className="text-left text-gray-300 text-xl ml-16 mt-2">
-                              {capitalizeFirstWord(translation.text)}
-                            </p>
-                          )}
-                          <hr className="mt-4 border-[1.5px] border-white" />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                  {surah && surahTranslation && (
-                    <ScrollToTopButton ToTopRef={ToTopRef.current} />
+                              <hr className="mt-4 border-[1.5px] border-white" />
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      {surah && surahTranslation && (
+                        <ScrollToTopButton ToTopRef={ToTopRef.current} />
+                      )}
+                    </div>
                   )}
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <div className="text-[#faebd7] text-xl font-medium mt-4 mb-4">
-            <h2>No Surah has been selected</h2>
-          </div>
-        )}
-      </div>
+                  {mushafMode === "translation" && (
+                    <div className="mt-4 sm:mt-8 relative">
+                      <ul>
+                        {surah?.ayahs.map((ayah) => {
+                          const translation = surahTranslation.ayahs.find(
+                            (tAyah) => tAyah.number === ayah.number
+                          );
+                          return (
+                            <li
+                              key={ayah.number}
+                              className="text-right text-[#faebd7] text-2xl leading-10 font-medium mb-4"
+                            >
+                              <article className="flex justify-between gap-x-8 text-[#faebd7]">
+                                <strong>{ayah.numberInSurah}</strong>{" "}
+                                {translation && (
+                                  <p className="text-left text-gray-300 text-xl ml-16 mt-2">
+                                    {capitalizeFirstWord(translation.text)}
+                                  </p>
+                                )}
+                              </article>
+
+                              <hr className="mt-4 border-[1.5px] border-white" />
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      {surah && surahTranslation && (
+                        <ScrollToTopButton ToTopRef={ToTopRef.current} />
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+            </>
+          ) : (
+            <div className="text-[#faebd7] text-xl font-medium mt-4 mb-4">
+              <h2>No Surah has been selected</h2>
+            </div>
+          )}
+        </div>
+      </main>
     </section>
   );
 };
