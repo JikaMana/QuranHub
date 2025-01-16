@@ -111,10 +111,10 @@ const MushafReader = () => {
     <section className="flex flex-col lg:flex-row gap-y-4 xl:mx-20 mx-4 lg:mx-10 h-screen lg:h-[80vh] overflow-hidden">
       <MushafReaderSurahBar />
       <main className="lg:flex-[0.8] mx-auto">
-        <div className="flex gap-x-2 ml-4 mb-2">
+        <div className="flex gap-x-2 ml-0 sm:ml-4 mb-2 ">
           <button
             onClick={() => handleModeChange("arabic")}
-            className={`bg-lime-950 opacity-85 px-4 py-1 text-[#faebd7] font-medium text-lg hover:scale-105 ${
+            className={`bg-lime-950 opacity-85 px-2 sm:px-4 py-1 text-[#faebd7] font-medium text-base md:text-lg hover:scale-105 ${
               mushafMode === "arabic" ? "bg-lime-700" : ""
             }`}
           >
@@ -122,7 +122,7 @@ const MushafReader = () => {
           </button>
           <button
             onClick={() => handleModeChange("translation")}
-            className={`bg-lime-950 opacity-85 px-4 py-1 text-[#faebd7] font-medium text-lg hover:scale-105 ${
+            className={`bg-lime-950 opacity-85 px-4 py-1 text-[#faebd7] font-medium text-base md:text-lg hover:scale-105 ${
               mushafMode === "translation" ? "bg-lime-700" : ""
             }`}
           >
@@ -130,7 +130,7 @@ const MushafReader = () => {
           </button>
           <button
             onClick={() => handleModeChange("both")}
-            className={`bg-lime-950 opacity-85 px-4 py-1 text-[#faebd7] font-medium text-lg hover:scale-105 ${
+            className={`bg-lime-950 opacity-85 px-4 py-1 text-[#faebd7] font-medium text-base md:text-lg hover:scale-105 ${
               mushafMode === "both" ? "bg-lime-700" : ""
             }`}
           >
