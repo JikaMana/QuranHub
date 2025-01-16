@@ -186,7 +186,7 @@ const MushafReader = () => {
                             className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
                           >
                             Start
-                            <FaPlay size={16} disable />
+                            <FaPlay size={16} />
                           </button>
                         )}
                         <button
