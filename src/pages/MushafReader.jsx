@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import quranData from "../data/chapters.js";
 import { Link, useParams } from "react-router-dom";
-import { FaPlay, FaPause, FaStop } from "react-icons/fa";
+import { FaPlay, FaPause, FaStop, FaRedo } from "react-icons/fa";
 import ScrollToTopButton from "../components/ScrollToTopButton";
 
 const MushafReader = () => {
@@ -58,6 +58,7 @@ const MushafReader = () => {
       }
     };
     fetchSurahData();
+    setIsDisabled(false);
   }, [surahNumber]);
 
   const playAudio = () => {
@@ -76,6 +77,10 @@ const MushafReader = () => {
     playNext();
     setIsPaused(false);
     setIsDisabled(true);
+
+    if (isDisabled == true) {
+    } else {
+    }
   };
 
   const pauseAudio = () => {
@@ -135,18 +140,23 @@ const MushafReader = () => {
                           <FaPlay size={16} />
                         )}
                       </button>
-                      <button
-                        onClick={playAudio}
-                        className={`bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 flex items-center gap-x-2 ${
-                          isDisabled
-                            ? "opacity-50 cursor-not-allowed"
-                            : "hover:bg-[#e9dbcb]"
-                        }`}
-                        disabled={isDisabled} // Disable the button based on state
-                      >
-                        Start
-                        <FaPlay size={16} disable />
-                      </button>
+                      {isDisabled ? (
+                        <button
+                          onClick={playAudio}
+                          className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                        >
+                          Restart
+                          <FaRedo size={16} />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={playAudio}
+                          className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
+                        >
+                          Start
+                          <FaPlay size={16} disable />
+                        </button>
+                      )}
                       <button
                         onClick={stopAudio}
                         className="bg-[#faebd7] text-lime-800 rounded-lg px-4 py-2 mt-6 hover:bg-[#e9dbcb] flex items-center gap-x-2"
